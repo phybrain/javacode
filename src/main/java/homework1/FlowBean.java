@@ -1,3 +1,5 @@
+package homework1;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.hadoop.io.Writable;

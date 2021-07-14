@@ -1,6 +1,7 @@
+package homework1;
+
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
