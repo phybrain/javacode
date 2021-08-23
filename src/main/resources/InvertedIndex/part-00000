@@ -1,0 +1,9 @@
+scala:{(doc1,1),(doc0,1)}
+spark:{(doc1,1)}
+hadoop:{(doc2,1)}
+hello:{(doc0,2),(doc1,1),(doc2,1)}
+java:{(doc0,1)}
+what:{(doc1,1)}
+so:{(doc1,1)}
+difficult:{(doc1,1)}
+fuck:{(doc1,1)}
