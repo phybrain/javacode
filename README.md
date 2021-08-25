@@ -63,3 +63,24 @@ src\main\resources\files\doc0.txt doc1.txt doc2.txt
  <br>
  2.spark distcp
  <br>
+ 代码：src\main\java\homework5\DistCp.scala
+ <br>
+ 本地测试，没搭集群，结果:src\main\resources\out
+ <br>
+  ![avatar](src/main/java/homework5/distcp.jpg)
+  ```scala
+      //参数解析
+       args.sliding(2, 2).toList.collect {
+            case Array("-source", sc: String) => inputPath = sc
+            case Array("-target", tg: String) => outputPath = tg
+            case Array("-i", ignore: String) => ignore_failures = ignore.toBoolean
+            case Array("-task", mc: String) => max_concurrence= mc.toInt
+      
+          }
+      //遍历目录
+      traverseDir(configuration,inputPath,true,filePaths,dirPaths)
+      //创建目录
+      createDirs(dirPaths,inputroot,outputroot,configuration)
+      //拷贝
+      distcp(inputroot,outputroot,filePaths,sparkContext,confBroadcast.value.value,ignore_failures,max_concurrence)
+  ```
