@@ -30,12 +30,14 @@
 1.展示电影ID为2116这部电影各年龄段的平均影评分<br>
 SELECT tr.age as age ,avg(tr.rate) as avgrate FROM  (SELECT u.age as age,r.rate as rate ,r.movieid as movieid FROM t_rating r  LEFT JOIN t_user u  on u.userid = r.userid)  tr  where tr.movieid = 2116 GROUP BY tr.age
 <br>
+
 ![avatar](src/main/java/homework4/hql1.jpg)
 <br>
 2.找出男性评分最高且评分次数超过50次的10部电影，展示电影名，平均影评分和评分次数
 <br>
 SELECT tr.sex as sex,tr.moviename as name, avg(tr.rate) as avgrate,count(tr.moviename) as total FROM (SELECT u.age as age,r.rate as rate ,r.movieid as movieid ,u.sex as sex ,m.moviename FROM t_rating r  LEFT JOIN t_user u  on u.userid = r.userid LEFT JOIN t_movie m on r.movieid=m.movieid )  tr where tr.sex="M" GROUP BY tr.sex,tr.moviename HAVING total>50 ORDER BY avgrate desc limit 10
 <br>
+
 ![avatar](src/main/java/homework4/hql2.jpg)
 3.找出影评次数最多的女士所给出最高分的10部电影的平均影评分，展示电影名和平均影评分
 <br>
@@ -46,6 +48,7 @@ SELECT t_movie.moviename moviename, t_rating.rate userrate FROM t_rating LEFT JO
 ) maxfemale on maxfemale.userid=t_rating.userid  ORDER BY userrate DESC LIMIT 10
 ) femaletop)
 <br>
+
 ![avatar](src/main/java/homework4/hql3.jpg)
 
 <br><br>
