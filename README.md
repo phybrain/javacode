@@ -1,10 +1,10 @@
 # javacode
-####1.javacode/src/main/java/homework1, phoneflow
+### 1.javacode/src/main/java/homework1, phoneflow
 <br>
 
 ![avatar](src/main/java/homework1/resource_manager_job.png)
 
-####2.javacode/src/main/java/homework2, rpc
+### 2.javacode/src/main/java/homework2, rpc
 <br>
 
 服务端：<br>
@@ -16,7 +16,7 @@
 ![avatar](src/main/java/homework2/client.jpg)
 <br>
 
-####3.javacode/src/main/java/homework3, hbase
+### 3.javacode/src/main/java/homework3, hbase
 
 <br>
 
@@ -24,7 +24,7 @@
 
 <br>
 
-####4.javacode/src/main/java/homework4, hive
+### 4.javacode/src/main/java/homework4, hive
 <br>
 部分结果顺序不一样<br>
 1.展示电影ID为2116这部电影各年龄段的平均影评分<br>
@@ -49,7 +49,7 @@ SELECT t_movie.moviename moviename, t_rating.rate userrate FROM t_rating LEFT JO
 ![avatar](src/main/java/homework4/hql3.jpg)
 
 <br><br>
-####5.javacode/src/main/java/homework5, spark rdd
+### 5.javacode/src/main/java/homework5, spark rdd,discp
 
 1.倒排索引
 <br>
