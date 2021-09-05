@@ -87,3 +87,5 @@ src\main\resources\files\doc0.txt doc1.txt doc2.txt
       //拷贝
       distcp(inputroot,outputroot,filePaths,sparkContext,confBroadcast.value.value,ignore_failures,max_concurrence)
   ```
+### 6.javacode/src/main/java/homework6, spark sql
+文档：src\main\java\homework6\homework6.md
