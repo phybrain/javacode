@@ -1,5 +1,7 @@
 ### 6.javacode/src/main/java/homework6, spark sql
+
 ####1.为Spark SQL添加一条自定义命令<br>
+
   • SHOW VERSION;<br>
   • 显示当前Spark版本和Java版本<br>
    新建command:<br>
@@ -49,11 +51,55 @@ nonReserved
     | VERSION
 VERSION: 'VERSION' 
 ```
+<br>
+linux编译测试成功：<br>
+
+ ![avatar](spark-sql.jpg)
+ 
 ####2.构建SQL满足如下要求
 
-通过set spark.sql.planChangeLog.level=WARN;查看
+通过set spark.sql.planChangeLog.level=WARN;查看<br>
+建表:<br>
+```sql
+create table student  (name string, age  integer, sex string);
+```
 1. 构建一条SQL，同时apply下面三条优化规则：
 CombineFilters CollapseProject BooleanSimplification
+ ```sql
 
+select name from ( select name,age from student ) where 1=1 and !(2!=2) and age>1;
+```
+ ![avatar](sql1.jpg)
 2. 构建一条SQL，同时apply下面五条优化规则：
 ConstantFolding PushDownPredicates ReplaceDistinctWithAggregate ReplaceExceptWithAntiJoin FoldablePropagation
+<br>
+```sql
+select distinct age,name from (select age,name,1 constant  from student order by constant) a where a.age=18 and constant=1 except select age,name from student where age=17;
+```
+<br>
+
+ ![avatar](sql2-1.jpg)
+ 
+ ![avatar](sql2-2.jpg)
+  
+ ![avatar](sql2-3.jpg)
+ 
+ <br>
+ 
+ ####3. 实现自定义优化规则（静默规则）
+ 第一步 实现自定义规则（静默规则，通过set spark.sql.planChangeLog.level=WARN;确认执行到就行）<br>
+ case class MyPushDown(spark: SparkSession) extends Rule[LogicalPlan] {
+ def apply(plan: LogicalPlan): LogicalPlan = plan transform { …. }
+ }
+ <br>
+ 第二步 创建自己的Extension并注入<br>
+ class MySparkSessionExtension extends (SparkSessionExtensions => Unit) {
+ override def apply(extensions: SparkSessionExtensions): Unit = {
+ extensions.injectOptimizerRule { session =>
+ new MyPushDown(session)
+ }
+ }
+ }
+ <br>
+ 第三步 通过spark.sql.extensions提交<br>
+ bin/spark-sql --jars my.jar --conf spark.sql.extensions=com.jikeshijian.MySparkSessionExtension
