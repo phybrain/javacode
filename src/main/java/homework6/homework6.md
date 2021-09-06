@@ -1,6 +1,6 @@
 ### 6.javacode/src/main/java/homework6, spark sql
 
-####1.为Spark SQL添加一条自定义命令<br>
+#### 1.为Spark SQL添加一条自定义命令<br>
 
   • SHOW VERSION;<br>
   • 显示当前Spark版本和Java版本<br>
@@ -56,7 +56,7 @@ linux编译测试成功：<br>
 
  ![avatar](spark-sql.jpg)
  
-####2.构建SQL满足如下要求
+#### 2.构建SQL满足如下要求
 
 通过set spark.sql.planChangeLog.level=WARN;查看<br>
 建表:<br>
@@ -86,7 +86,7 @@ select distinct age,name from (select age,name,1 constant  from student order by
  
  <br>
  
- ####3. 实现自定义优化规则（静默规则）
+ #### 3. 实现自定义优化规则（静默规则）
  第一步 实现自定义规则（静默规则，通过set spark.sql.planChangeLog.level=WARN;确认执行到就行）<br>
  case class MyPushDown(spark: SparkSession) extends Rule[LogicalPlan] {
  def apply(plan: LogicalPlan): LogicalPlan = plan transform { …. }
