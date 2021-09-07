@@ -87,19 +87,46 @@ select distinct age,name from (select age,name,1 constant  from student order by
  <br>
  
  #### 3. 实现自定义优化规则（静默规则）
+ 环境太难搞了 终于打包运行成功了<br>
  第一步 实现自定义规则（静默规则，通过set spark.sql.planChangeLog.level=WARN;确认执行到就行）<br>
- case class MyPushDown(spark: SparkSession) extends Rule[LogicalPlan] {
- def apply(plan: LogicalPlan): LogicalPlan = plan transform { …. }
- }
+ ```scala
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.expressions.{Literal, Multiply}
+import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan
+import org.apache.spark.sql.catalyst.rules.Rule
+import  org.apache.spark.sql.types.Decimal
+
+case class MultiplyOptimizationRule(spark: SparkSession) extends Rule[LogicalPlan] {
+  def apply(plan: LogicalPlan): LogicalPlan = plan transformExpressions  {
+    case Multiply(left,right,error) if right.isInstanceOf[Literal] &&
+      right.asInstanceOf[Literal].value.isInstanceOf[Decimal] => //value.asInstanceOf[Decimal] == 1.0
+      println("-----------------------------My Optimization------------------------------")
+      left
+
+  }
+}
+
+```
  <br>
  第二步 创建自己的Extension并注入<br>
- class MySparkSessionExtension extends (SparkSessionExtensions => Unit) {
- override def apply(extensions: SparkSessionExtensions): Unit = {
- extensions.injectOptimizerRule { session =>
- new MyPushDown(session)
- }
- }
- }
+ 
+ ```scala
+
+import org.apache.spark.sql.SparkSessionExtensions
+
+class MySparkSessionExtension extends (SparkSessionExtensions => Unit) {
+  override def apply(extensions: SparkSessionExtensions): Unit = {
+    extensions.injectOptimizerRule { session =>
+      new MultiplyOptimizationRule(session)
+    }
+  }
+}
+
+```
  <br>
  第三步 通过spark.sql.extensions提交<br>
- bin/spark-sql --jars my.jar --conf spark.sql.extensions=com.jikeshijian.MySparkSessionExtension
+ bin/spark-sql --jars my.jar --conf spark.sql.extensions=MySparkSessionExtension<br>
+ 
+  ![avatar](optimization.jpg)
+ 
+ 
