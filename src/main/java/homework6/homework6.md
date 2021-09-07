@@ -126,6 +126,13 @@ class MySparkSessionExtension extends (SparkSessionExtensions => Unit) {
  <br>
  第三步 通过spark.sql.extensions提交<br>
  bin/spark-sql --jars my.jar --conf spark.sql.extensions=MySparkSessionExtension<br>
+ 运行sql:
+ 
+ ```scala
+ select age*1.0 from student;
+ 
+ ```
+ 
  
   ![avatar](optimization.jpg)
  
